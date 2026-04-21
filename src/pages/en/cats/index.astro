@@ -1,0 +1,416 @@
+---
+import ArticleLayout from '../../../components/ArticleLayout.astro';
+
+const sidebarItems = [
+  {
+    label: 'Feeding',
+    href: '#feeding',
+    children: [
+      { label: 'Forbidden foods', href: '#forbidden-foods' },
+      { label: 'Treats',          href: '#treats' },
+    ],
+  },
+  { label: 'Litter',       href: '#litter' },
+  { label: 'Environment',  href: '#environment' },
+  { label: 'Hygiene',      href: '#hygiene' },
+  {
+    label: 'Health',
+    href: '#health',
+    children: [
+      { label: 'Sterilization', href: '#sterilization' },
+      { label: 'Parasites',     href: '#parasites' },
+    ],
+  },
+  { label: 'Walks',        href: '#walks' },
+  {
+    label: 'Behaviour',
+    href: '#behaviour',
+    children: [
+      { label: 'Play',       href: '#play' },
+      { label: 'Alone time', href: '#alone' },
+      { label: 'Changes',    href: '#changes' },
+    ],
+  },
+];
+---
+
+<ArticleLayout
+  lang="en"
+  animal="cats"
+  title="Cat care guide"
+  sidebarItems={sidebarItems}
+>
+
+  <!-- ─── FEEDING ─────────────────────────────────────────────────────────── -->
+  <section id="feeding" class="mb-14 scroll-mt-20">
+    <h2 class="text-3xl font-bold text-[#2d5a4e] dark:text-[#D37475] mb-3 pb-1 border-b border-[#e8c4b8]">1. Feeding</h2>
+
+    <h3 class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mb-2">Diet basics</h3>
+    <p>
+      Cats are strict carnivores and need a diet rich in animal protein.
+      That said, other components of the diet matter too and should not be neglected.
+    </p>
+    <p class="mt-2">
+      Contrary to popular belief, cats should <strong>not</strong> eat wet food exclusively.
+      Kibble is essential for dental health — wet food should only be a complement or treat.
+      Cats often prefer wet food because of animal fat (very aromatic), but it usually
+      contains little real meat, often of lower quality.
+    </p>
+
+    <h3 class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-5 mb-2">How to choose kibble</h3>
+    <ul class="list-disc pl-5 space-y-2 mt-1">
+      <li>
+        <strong>Meat ≥ 70 %</strong> — pay attention to the exact description.
+        "Chicken" alone is vague and undesirable; "fresh deboned chicken" is far better.
+        Cats can be allergic to certain proteins, so observe their reaction to any new food.
+      </li>
+      <li>
+        <strong>Carbohydrates matter.</strong> Poor sources (corn, wheat) can trigger allergies.
+        Good sources: sweet potato, whole-grain rice, peas.
+      </li>
+      <li>
+        A trustworthy manufacturer lists a <strong>detailed composition with percentages</strong>.
+      </li>
+    </ul>
+    <p class="mt-3 text-sm text-[#555] dark:text-[#848484]">
+      <em>Recommended brands — Premium:</em> Alleva, Acana, Applaws. &nbsp;
+      <em>Good quality:</em> Carnilove, N&amp;D.
+    </p>
+
+    <div class="mt-5 mb-5 h-75 bg-white dark:bg-[#454341] border border-dashed border-[#e8c4b8] rounded-lg flex items-center justify-center text-[#7a9070] text-sm italic">
+      <img class="w-110 dark:hidden" src="/ingridients-cats.png">
+      <img class="w-90 hidden dark:block" src="/ingridients-cats-dark.png">
+    </div>
+    <p class="mt-2 text-xs text-[#7a9070] dark:text-[#A9AFA0]">
+      Source:
+      <a href="https://icatcare.org/advice/feeding-your-cat/" target="_blank" rel="noopener"
+         class="underline hover:text-[#2d5a4e]">International Cat Care — Feeding your cat</a>
+    </p>
+
+    <!-- FORBIDDEN FOODS -->
+    <h3 id="forbidden-foods" class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-10 mb-2 scroll-mt-20">Forbidden foods</h3>
+    <p>Many foods harmless to humans can be dangerous or even fatal for cats.</p>
+    <ul class="list-disc pl-5 space-y-2 mt-2">
+      <li>
+        <strong>Milk</strong> — as cats age, the enzyme needed to digest lactose decreases
+        significantly; milk causes serious digestive problems in adult cats.
+      </li>
+      <li>
+        <strong>Bones</strong> — small fish bones can lodge in the throat;
+        chicken bones lacerate the oesophagus and stomach, sometimes requiring emergency surgery.
+      </li>
+      <li>
+        <strong>Raw meat &amp; fish</strong> — risk of parasites, digestive disorders, and neurological problems.
+      </li>
+    </ul>
+
+    <p class="mt-4 font-semibold text-[#8b2020] dark:text-[#944040]">Toxic to the liver:</p>
+    <ul class="list-disc pl-5 space-y-1 mt-1">
+      <li>Grapes &amp; raisins</li>
+      <li>Avocado</li>
+      <li>Chocolate</li>
+      <li>Onion &amp; garlic</li>
+      <li>Very fatty or salty foods</li>
+    </ul>
+    <p class="mt-3 font-bold text-xl text-[#8b2020] dark:text-[#944040]">Alcohol can cause coma and death even in tiny amounts!</p>
+    <p class="mt-2 text-sm italic">
+      Before giving your cat any human food, ask yourself: could you call an emergency vet
+      if things went wrong? Every minute counts.
+    </p>
+
+    <p class="mt-2 text-xs text-[#7a9070] dark:text-[#A9AFA0]">
+      Source:
+      <a href="https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets"
+         target="_blank" rel="noopener" class="underline hover:text-[#2d5a4e]">
+        ASPCA — Foods to avoid feeding your pets
+      </a>
+    </p>
+
+    <!-- TREATS -->
+    <h3 id="treats" class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-10 mb-2 scroll-mt-20">Treats</h3>
+    <p>
+      Treats are important for positive reinforcement, but must be chosen carefully.
+      They should represent only <strong>5–10 %</strong> of total daily intake.
+    </p>
+    <p class="mt-2">
+      In summer, during heat waves, you can freeze wet food into small portions to help
+      your cat cool down. Lick mats are another great option.
+    </p>
+    <ul class="list-disc pl-5 space-y-2 mt-3">
+      <li>
+        <strong>Avoid popular mass-market brands</strong> (Whiskas, Sheba, Dreamies) —
+        they invest in marketing, not quality. "Animal by-products" on the label often hides
+        chemically treated scraps, skin and bone.
+      </li>
+      <li>
+        <strong>Simpler is better.</strong> Dried organ pieces (e.g. Wild Freedom) make
+        excellent treats — the ingredient list is exactly what it says.
+      </li>
+    </ul>
+
+    <div class="mt-5 h-60 bg-[#f5f0eb] dark:bg-[#454341] border border-dashed border-[#e8c4b8] rounded-lg flex items-center justify-center text-[#7a9070] text-sm italic">
+      <img class="w-60" src="/treats.png">
+    </div>
+  </section>
+
+  <!-- ─── LITTER ────────────────────────────────────────────────────────────── -->
+  <section id="litter" class="mb-14 scroll-mt-20">
+    <h2 class="text-3xl font-bold text-[#2d5a4e] dark:text-[#D37475] mb-3 pb-1 border-b border-[#e8c4b8]">2. Litter</h2>
+    <p>
+      Cats are very demanding and sensitive. If anything displeases them — smell, texture,
+      location — they will refuse to use the tray and go elsewhere.
+      This is why you need <strong>at least two litter trays</strong>.
+    </p>
+    <p class="mt-2 text-sm text-[#555] dark:text-[#848484] italic">
+      Example: a cat wants to go to the toilet, but someone used an air freshener nearby.
+      The intense smell makes the cat feel uncomfortable or unable to recognise its tray —
+      so it finds another spot.
+    </p>
+
+    <h3 class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-5 mb-2">Types of litter</h3>
+    <ul class="list-disc pl-5 space-y-2 mt-1">
+      <li>
+        <strong>Bentonite &amp; wood</strong> — most popular but often low quality.
+        Bentonite produces a lot of dust (respiratory risk); wood litter can contain large splinters.
+      </li>
+      <li>
+        <strong>Silica</strong> — traps odours well, but the crunching sound frightens many
+        cats, and granules can get stuck between paw pads — dangerous if swallowed.
+      </li>
+      <li>
+        <strong>Soy</strong> — natural, sometimes lightly scented, biodegradable.
+        Less common; buy at pet shops or online.
+      </li>
+    </ul>
+
+    <div class="mt-5 h-60 bg-[#f5f0eb] dark:bg-[#454341] border border-dashed border-[#e8c4b8] rounded-lg flex items-center justify-center text-[#7a9070] text-sm italic">
+      <img class="w-80" src="/litter.png">
+    </div>
+    <p class="mt-2 text-xs text-[#7a9070] dark:text-[#A9AFA0]">
+      Source:
+      <a href="https://icatcare.org/advice/the-litter-tray/" target="_blank" rel="noopener"
+         class="underline hover:text-[#2d5a4e]">International Cat Care — The litter tray</a>
+    </p>
+  </section>
+
+  <!-- ─── ENVIRONMENT ───────────────────────────────────────────────────────── -->
+  <section id="environment" class="mb-14 scroll-mt-20">
+    <h2 class="text-3xl font-bold text-[#2d5a4e] dark:text-[#D37475] mb-3 pb-1 border-b border-[#e8c4b8]">3. Environment</h2>
+
+    <h3 class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mb-2">Windows</h3>
+    <p>
+      Windows are responsible for the majority of cat injuries and deaths at home.
+    </p>
+    <ul class="list-disc pl-5 space-y-2 mt-2">
+      <li>
+        <strong>Fully open windows</strong> — remember: <strong>cats fall out of windows.</strong>
+        Even a calm cat that has never jumped can be startled by a bird, a sudden noise, or
+        a passing car. The only safe solution is a purpose-made protective net.
+        A standard fly screen will not support an adult cat's weight — and because it creates
+        a false sense of security, cats push against it harder and fall.
+      </li>
+      <li>
+        <strong>Tilt-and-turn position</strong> — widely considered safe, but it is not.
+        A cat trying to squeeze through the narrow gap can get its body trapped between the
+        frames. This compresses organs and can cause permanent disability or death.
+      </li>
+    </ul>
+
+    <div class="mt-5 h-60 bg-white dark:bg-[#454341] border border-dashed border-[#e8c4b8] rounded-lg flex items-center justify-center text-[#7a9070] text-sm italic">
+      <img class="w-140" src="/window-safe.jpg">
+    </div>
+
+    <h3 class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-7 mb-2">Scratching post</h3>
+    <p>
+      Cats need to scratch to sharpen their claws, relieve stress, and mark their territory.
+      Buy a scratching post and show your cat how to use it — this protects your furniture.
+    </p>
+
+    <p class="mt-4 text-xs text-[#7a9070] dark:text-[#A9AFA0]">
+      Source:
+      <a href="https://icatcare.org/advice/making-a-safe-home-for-your-cat/" target="_blank" rel="noopener"
+         class="underline hover:text-[#2d5a4e]">International Cat Care — Making a safe home</a>
+    </p>
+  </section>
+
+  <!-- ─── HYGIENE ───────────────────────────────────────────────────────────── -->
+  <section id="hygiene" class="mb-14 scroll-mt-20">
+    <h2 class="text-3xl font-bold text-[#2d5a4e] dark:text-[#D37475] mb-3 pb-1 border-b border-[#e8c4b8]">4. Hygiene</h2>
+    <p>
+      Cats are extremely clean animals and groom themselves constantly — be very careful
+      about anything applied to their coat, as they will ingest it.
+    </p>
+
+    <h3 class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-5 mb-2">Bathing</h3>
+    <p>
+      Cats have sensitive skin with a natural protective barrier disrupted by washing.
+      <strong>Do not bathe your cat without necessity</strong> — for instance, only if they
+      have come into contact with something toxic or dangerous to lick.
+    </p>
+
+    <h3 class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-5 mb-2">Claws</h3>
+    <p>
+      Even though cats sharpen their claws daily, regular trimming prevents problems.
+      Use a purpose-made cat nail clipper — some have a stop guard to prevent cutting too far.
+      <strong>Only cut the translucent tip;</strong> avoid the pink quick (blood vessels and nerves).
+    </p>
+
+    <p class="mt-2 text-xs text-[#7a9070] dark:text-[#A9AFA0]">
+      Source:
+      <a href="https://icatcare.org/advice/grooming-your-cat/" target="_blank" rel="noopener"
+         class="underline hover:text-[#2d5a4e]">International Cat Care — Grooming your cat</a>
+    </p>
+  </section>
+
+  <!-- ─── HEALTH ────────────────────────────────────────────────────────────── -->
+  <section id="health" class="mb-14 scroll-mt-20">
+    <h2 class="text-3xl font-bold text-[#2d5a4e] dark:text-[#D37475] mb-3 pb-1 border-b border-[#e8c4b8]">5. Health</h2>
+    <p>
+      Even indoor cats need an <strong>annual vaccination</strong> and parasite treatment —
+      viruses and parasites can travel indoors on shoe soles and clothing.
+    </p>
+
+    <h3 id="sterilization" class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-5 mb-2 scroll-mt-20">Sterilization</h3>
+    <p>
+      Sterilization is strongly recommended. It drastically reduces the risk of mammary
+      tumours (<strong>90 % of which are malignant</strong> in cats) and completely eliminates
+      ovarian and uterine diseases. Studies show sterilised females live on average
+      <strong>39 % longer</strong>.
+    </p>
+
+    <p class="mt-2 text-xs text-[#7a9070] dark:text-[#A9AFA0]">
+      Source:
+      <a href="https://icatcare.org/advice/neutering-your-cat/" target="_blank" rel="noopener"
+         class="underline hover:text-[#2d5a4e]">International Cat Care — Neutering your cat</a>
+    </p>
+
+    <h3 id="parasites" class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-8 mb-2 scroll-mt-20">Parasite control &amp; vaccination schedule</h3>
+    <ul class="list-disc pl-5 space-y-2 mt-1">
+      <li>Flea &amp; tick treatment + deworming — <strong>10 days before</strong> the annual booster.</li>
+      <li>Annual booster vaccination at the vet.</li>
+      <li>
+        Parasite treatment can be done at home, but use
+        <strong>vet-recommended products only</strong> —
+        shampoos, collars and essential oils are ineffective.
+      </li>
+    </ul>
+    <p class="mt-3 text-xs text-[#7a9070] dark:text-[#A9AFA0]">
+      Source:
+      <a href="https://wsava.org/global-guidelines/vaccination-guidelines/" target="_blank" rel="noopener"
+         class="underline hover:text-[#2d5a4e]">WSAVA — Vaccination guidelines</a>
+    </p>
+  </section>
+
+  <!-- ─── WALKS ─────────────────────────────────────────────────────────────── -->
+  <section id="walks" class="mb-14 scroll-mt-20">
+    <h2 class="text-3xl font-bold text-[#2d5a4e] dark:text-[#D37475] mb-3 pb-1 border-b border-[#e8c4b8]">6. Walks</h2>
+    <p>Cats can be walked outdoors, but preparation is key.</p>
+
+    <h3 class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-5 mb-2">Equipment</h3>
+    <ul class="list-disc pl-5 space-y-2 mt-1">
+      <li>
+        <strong>Harness</strong> — always prefer a harness over a collar; much harder for
+        the cat to wriggle out of.
+      </li>
+      <li>
+        <strong>Leash</strong> — standard length, not retractable (constant tension is
+        uncomfortable for cats). <strong>Never let go of the leash</strong> — a frightened
+        cat can bolt and climb somewhere dangerous or impossible to reach.
+      </li>
+    </ul>
+    <p class="mt-3">
+      Vaccination and tick protection are <strong>mandatory</strong> before outdoor walks
+      (see Health section).
+    </p>
+
+    <div class="mt-5 h-55 bg-[#f5f0eb] dark:bg-[#454341] border border-dashed border-[#e8c4b8] rounded-lg flex items-center justify-center text-[#7a9070] text-sm italic">
+      <img class="w-60" src="/harness.png">
+    </div>
+    <p class="mt-2 text-xs text-[#7a9070] dark:text-[#A9AFA0]">
+      Source:
+      <a href="https://icatcare.org/advice/walking-your-cat-on-a-lead/" target="_blank" rel="noopener"
+         class="underline hover:text-[#2d5a4e]">International Cat Care — Walking your cat on a lead</a>
+    </p>
+  </section>
+
+  <!-- ─── BEHAVIOUR ─────────────────────────────────────────────────────────── -->
+  <section id="behaviour" class="mb-14 scroll-mt-20">
+    <h2 class="text-3xl font-bold text-[#2d5a4e] dark:text-[#D37475] mb-3 pb-1 border-b border-[#e8c4b8]">7. Behaviour</h2>
+
+    <h3 id="play" class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mb-2 scroll-mt-20">Play</h3>
+    <p>
+      Cats are hunters by nature and need to run, jump, and play. Even as they age and calm
+      down, be prepared for midnight sprints around the apartment.
+    </p>
+    <h4 class="font-semibold mt-3 mb-1 text-[#2d5a4e] dark:text-[#65B9A3]">Good habits</h4>
+    <ul class="list-disc pl-5 space-y-1">
+      <li>Rotate toys regularly — novelty keeps play exciting.</li>
+      <li>Don't leave all toys out permanently; scarcity makes sessions more engaging.</li>
+    </ul>
+    <h4 class="font-semibold mt-3 mb-1 text-[#2d5a4e] dark:text-[#65B9A3]">Things to avoid</h4>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>
+        <strong>Never play with your hands</strong> — what feels like play for a cat can
+        be painful for you and raises infection risk.
+      </li>
+      <li>
+        <strong>Laser pointers</strong> — the concentrated beam can damage a cat's retina;
+        and since the cat can never "catch" the prey, the nervous system is stimulated
+        without reward, causing anxiety and apathy towards other toys.
+      </li>
+    </ul>
+    <p class="mt-2 text-sm text-[#555] dark:text-[#848484]">
+      <em>Good toy types:</em> natural material toys (safe if swallowed), interactive puzzle
+      feeders (stimulate thinking, keep cats busy longer).
+    </p>
+
+    <div class="mt-5 h-55 w-70 bg-[#f5f0eb] dark:bg-[#454341] border border-dashed border-[#e8c4b8] rounded-lg flex items-center justify-center text-[#7a9070] text-sm italic">
+      <img class="w-70" src="/cat-toys.png">
+    </div>
+    <p class="mt-2 text-xs text-[#7a9070] dark:text-[#A9AFA0]">
+      Source:
+      <a href="https://icatcare.org/advice/playing-with-your-cat/" target="_blank" rel="noopener"
+         class="underline hover:text-[#2d5a4e]">International Cat Care — Playing with your cat</a>
+    </p>
+
+    <h3 id="alone" class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-10 mb-2 scroll-mt-20">Alone time</h3>
+    <p>Being left alone can be a significant source of stress. Help your cat adapt gradually:</p>
+    <ol class="list-decimal pl-5 space-y-2 mt-2">
+      <li>
+        <strong>Start short</strong> — leave for 10–15 minutes, then an hour, increasing
+        progressively. Avoid dramatic goodbyes; leave calmly and return without fuss.
+      </li>
+      <li>
+        Establish a <strong>consistent routine</strong> for meals and interaction to give
+        your cat a sense of stability.
+      </li>
+      <li>Pet shops sell toys specifically designed for periods of solitude.</li>
+    </ol>
+    <p class="mt-3">
+      Provide a <strong>safe personal space</strong> — a cave-style bed where the cat can
+      hide from noise. If the cat is inside it, never force them out or raise your voice near it.
+    </p>
+    <p class="mt-2 text-xs text-[#7a9070] dark:text-[#A9AFA0]">
+      Source:
+      <a href="https://icatcare.org/advice/cats-and-stress/" target="_blank" rel="noopener"
+         class="underline hover:text-[#2d5a4e]">International Cat Care — Cats and stress</a>
+    </p>
+
+    <h3 id="changes" class="font-bold text-xl text-[#774A33] dark:text-[#D49E84] mt-10 mb-2 scroll-mt-20">Introducing changes</h3>
+    <p>
+      Any change — new food, new litter, new environment — must be introduced
+      <strong>gradually</strong>.
+    </p>
+    <ul class="list-disc pl-5 space-y-2 mt-2">
+      <li>
+        <strong>New food:</strong> mix increasing amounts of the new food into the old over
+        7–10 days. Watch for allergic reactions or intolerance.
+      </li>
+      <li>
+        <strong>New litter:</strong> cats may refuse a new type due to smell, texture, or feel.
+        Start with just one tray, keeping the other unchanged.
+      </li>
+    </ul>
+  </section>
+
+</ArticleLayout>

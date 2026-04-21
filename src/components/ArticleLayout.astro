@@ -1,0 +1,93 @@
+---
+import Navbar  from './Navbar.astro';
+import Sidebar from './Sidebar.astro';
+import '../styles/global.css';
+
+interface NavItem {
+  label: string;
+  href: string;
+  children?: { label: string; href: string }[];
+}
+
+interface Props {
+  lang?:        'en' | 'fr';
+  animal?:      'cats' | 'dogs';
+  title:        string;
+  sidebarItems: NavItem[];
+}
+
+const { lang = 'en', animal, title, sidebarItems } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-[#f5f0eb] dark:bg-[#201F1E] text-[#1e2a24] font-['Inria_Sans',sans-serif]">
+
+    <Navbar lang={lang} animal={animal} />
+
+    <div class="flex">
+      <Sidebar items={sidebarItems} />
+
+      <main
+        id="main-content"
+        tabindex="-1"
+        class="flex-1 bg-white dark:bg-[#201F1E] min-h-[calc(100vh-48px)] px-4 sm:px-8 md:px-12 py-6 md:py-8 outline-none"
+      >
+        <article class="mx-auto max-w-[70ch]">
+          <h1 class="m-0 mb-5 text-xl sm:text-2xl md:text-3xl dark:text-[#FFB6B7] font-bold pb-3 border-b-2 border-[#e8c4b8]">
+            {title}
+          </h1>
+          <div class="text-base leading-[1.8] text-[#2c3e35] dark:text-white [&_p]:mb-4">
+            <slot />
+          </div>
+        </article>
+      </main>
+    </div>
+
+    <!-- Back-to-top -->
+    <button
+      id="backToTop"
+      aria-label="Back to top"
+      title="Back to top"
+      class="
+        fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-6 z-50
+        w-13 h-13 rounded-full border-0
+        bg-[#7a9070] dark:bg-[#686868] text-white text-lg leading-none
+        shadow-[0_3px_12px_rgba(0,0,0,0.2)]
+        cursor-pointer
+        opacity-0 pointer-events-none
+        transition-all duration-300 ease-in-out
+        hover:bg-[#2d5a4e] hover:-translate-y-0.5 dark:hover:bg-[#94A87C]
+      "
+    >↑</button>
+
+    <script>
+      const btn = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        if (!btn) return;
+        if (window.scrollY > 300) {
+          btn.classList.remove('opacity-0', 'pointer-events-none');
+          btn.classList.add('opacity-100', 'pointer-events-auto');
+        } else {
+          btn.classList.add('opacity-0', 'pointer-events-none');
+          btn.classList.remove('opacity-100', 'pointer-events-auto');
+        }
+      });
+      btn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+
+  </body>
+</html>

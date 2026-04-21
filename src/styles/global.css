@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7a9070;
+}
+
+* {
+  scrollbar-color: #7a9070 #f5f0eb;
+}
