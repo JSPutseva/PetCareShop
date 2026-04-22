@@ -73,12 +73,14 @@ const searchText = [brand, title].filter(Boolean).join(' ');
   class="product-card flex flex-col no-underline rounded-2xl p-3 transition-all duration-200 group hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
 >
   <div class="bg-white dark:bg-[#3a2520] rounded-xl aspect-square mb-3 overflow-hidden flex items-center justify-center p-4">
-    <img
-      src={image}
-      alt={imageAlt}
-      class={isPlaceholder ? "w-1/2 h-1/2 object-contain opacity-50" : "w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"}
-      loading="lazy"
-    />
+    {isPlaceholder ? (
+      <>
+        <img src="/unfound-placeholder.svg"      alt={imageAlt} class="w-1/2 h-1/2 object-contain opacity-50 dark:hidden" loading="lazy" />
+        <img src="/unfound-placeholder-dark.svg" alt={imageAlt} class="w-1/2 h-1/2 object-contain opacity-50 hidden dark:block" loading="lazy" />
+      </>
+    ) : (
+      <img src={image} alt={imageAlt} class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+    )}
   </div>
 
   <div class="px-1 mt-1 flex-1">

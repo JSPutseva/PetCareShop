@@ -130,8 +130,16 @@ import { Badge } from "@/components/ui/badge"
   }
 
   function openModal(card: HTMLElement) {
-    (document.getElementById('modal-image') as HTMLImageElement).src = card.dataset.modalImage ?? '';
-    (document.getElementById('modal-image') as HTMLImageElement).alt = card.dataset.modalTitle ?? '';
+    const imgEl = document.getElementById('modal-image') as HTMLImageElement;
+    const src = card.dataset.modalImage ?? '';
+    const alt = card.dataset.modalTitle ?? '';
+    const isPlaceholder = src === '/unfound-placeholder.svg';
+    const isDark = document.documentElement.classList.contains('dark');
+
+    imgEl.src = isPlaceholder
+      ? (isDark ? '/unfound-placeholder-dark.svg' : '/unfound-placeholder.svg')
+      : src;
+    imgEl.alt = alt;
     document.getElementById('modal-brand')!.textContent  = card.dataset.modalBrand   ?? '';
     document.getElementById('modal-title')!.textContent  = card.dataset.modalTitle   ?? '';
     document.getElementById('modal-price')!.textContent  = card.dataset.modalPrice   ?? '';
