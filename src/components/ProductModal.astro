@@ -1,0 +1,233 @@
+---
+import { Badge } from "@/components/ui/badge"
+---
+
+<div
+  id="product-modal"
+  class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+>
+
+  <div id="modal-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+
+  <div id="modal-panel" class="modal-panel relative z-10 bg-white dark:bg-[#2a1e1a] rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-row overflow-hidden transition-[max-width] duration-300 ease-in-out">
+
+    <button
+      id="modal-close"
+      aria-label="Close"
+      class="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center border-0 cursor-pointer bg-[#fbe6e0] dark:bg-[#3a2520] text-[#774A33] dark:text-[#D49E84] hover:bg-[#e8d5ce] dark:hover:bg-[#4a2f28] transition-colors text-lg font-bold z-20"
+    >✕</button>
+
+    <div class="w-full min-h-0 flex flex-col overflow-y-auto">
+
+      <!-- Top section -->
+      <div class="flex flex-col sm:flex-row gap-0">
+
+        <div class="sm:w-[45%] shrink-0 bg-white dark:bg-[#3a2520] rounded-tl-2xl rounded-tr-2xl sm:rounded-tr-none sm:rounded-bl-2xl flex items-center justify-center p-6 min-h-55">
+          <img id="modal-image" src="" alt="" class="max-w-full max-h-65 object-contain" />
+        </div>
+
+        <!-- Right column -->
+        <div class="flex-1 flex flex-col gap-3 p-5 pt-6">
+
+          <div class="bg-[#fbe6e0] dark:bg-[#3a2520] flex flex-col gap-3 p-3 rounded-xl flex-1">
+
+            <div class="flex flex-wrap items-center gap-2">
+              <Badge id="modal-badge-id" variant="outline" class="bg-white dark:bg-[#e89d87] border-0 dark:text-[#311a12] w-"></Badge>
+              <Badge id="modal-badge-reviews" variant="destructive"></Badge>
+            </div>
+
+            <p id="modal-brand" class="text-[13px] font-bold uppercase tracking-widest text-[#557034] dark:text-[#c8dab0] m-0"></p>
+
+            <div class="flex items-start justify-between gap-3">
+              <h2 id="modal-title" class="text-lg font-bold text-[#3a2a20] dark:text-[#f5d4c0] m-0 leading-snug"></h2>
+              <span id="modal-status-dot" class="w-3 h-3 rounded-full shrink-0 mt-1.5 border border-white/30" title=""></span>
+            </div>
+
+            <div id="modal-rating" class="flex gap-0.5 text-[#dc633e]"></div>
+
+            <div class="flex items-center gap-2">
+              <button
+                id="ingredients-btn"
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold border-2 border-[#a0b87a] text-[#4a6a2a] dark:text-[#c8dab0] bg-transparent hover:bg-[#eaf2df] dark:hover:bg-[#2a3a1a] transition-colors cursor-pointer dark:border-[#6a8a4a]"
+              >
+                Ingredients
+              </button>
+              <p id="modal-price" class="ml-auto text-base font-bold text-[#774A33] dark:text-[#D49E84] m-0"></p>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-2 mt-1">
+              <button class="cursor-pointer p-1.5 rounded-lg border-0 bg-transparent text-[#c98c7a] dark:text-[#d76e5c] hover:text-[#d9534f] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </button>
+              <button class="flex-1 py-2 rounded-xl bg-[#c98c7a] dark:bg-[#3c572e] text-white font-semibold text-sm border-0 hover:bg-[#b87868] dark:hover:bg-[#8a5040] transition-colors cursor-pointer">
+                Add to Cart
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="px-5 pb-5 pt-1">
+        <div class="h-px bg-[#e8d5ce] dark:bg-[#4a2f28] mb-4"></div>
+        <p id="modal-description" class="text-sm text-[#5a4040] dark:text-[#c8b0a8] leading-relaxed m-0 italic line-clamp-5"></p>
+        <button
+          id="modal-desc-more"
+          class="hidden mt-1.5 text-xs font-semibold text-[#c98c7a] dark:text-[#D49E84] bg-transparent border-0 cursor-pointer p-0 hover:underline"
+        >More…</button>
+      </div>
+
+    </div>
+
+    <!-- Ingredients panel -->
+    <div
+      id="ingredients-panel"
+      class="w-0 min-h-0 shrink-0 overflow-hidden transition-[width] duration-300 ease-in-out border-l-0 border-[#e8d5ce] dark:border-[#3a2520] bg-[#f5f0eb] dark:bg-[#1e1410] relative"
+    >
+      <div id="ingredients-content" class="absolute inset-0 w-52 flex flex-col p-4 overflow-y-auto opacity-0 transition-opacity duration-200">
+        <p class="text-[13px] font-bold uppercase tracking-widest text-[#9a6a55] dark:text-[#A9AFA0] mb-3 m-0">Ingredients</p>
+        <p id="ingredients-text" class="text-sm text-[#5a4040] dark:text-[#c8b0a8] text-pretty leading-relaxed m-0"></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const modal           = document.getElementById('product-modal')!;
+  const backdrop        = document.getElementById('modal-backdrop')!;
+  const closeBtn        = document.getElementById('modal-close')!;
+  const descEl          = document.getElementById('modal-description')!;
+  const moreBtn         = document.getElementById('modal-desc-more')!;
+  const modalPanel         = document.getElementById('modal-panel')!;
+  const ingredientsBtn     = document.getElementById('ingredients-btn')!;
+  const ingredientsPanel   = document.getElementById('ingredients-panel')!;
+  const ingredientsContent = document.getElementById('ingredients-content')!;
+  const ingredientsText    = document.getElementById('ingredients-text')!;
+
+  let ingredientsOpen = false;
+
+  function toggleIngredients() {
+    ingredientsOpen = !ingredientsOpen;
+    modalPanel.style.maxWidth              = ingredientsOpen ? '56rem' : '';
+    ingredientsPanel.style.width           = ingredientsOpen ? '13rem' : '0';
+    ingredientsPanel.style.borderLeftWidth = ingredientsOpen ? '1px'   : '0';
+    ingredientsBtn.dataset.open            = ingredientsOpen ? 'true'  : 'false';
+
+    if (ingredientsOpen) {
+      setTimeout(() => { ingredientsContent.style.opacity = '1'; }, 220);
+    } else {
+      ingredientsContent.style.opacity = '0';
+    }
+  }
+
+  function openModal(card: HTMLElement) {
+    (document.getElementById('modal-image') as HTMLImageElement).src = card.dataset.modalImage ?? '';
+    (document.getElementById('modal-image') as HTMLImageElement).alt = card.dataset.modalTitle ?? '';
+    document.getElementById('modal-brand')!.textContent  = card.dataset.modalBrand   ?? '';
+    document.getElementById('modal-title')!.textContent  = card.dataset.modalTitle   ?? '';
+    document.getElementById('modal-price')!.textContent  = card.dataset.modalPrice   ?? '';
+
+    const id      = card.dataset.modalId      ?? '';
+    const reviews = card.dataset.modalReviews ?? '';
+    document.getElementById('modal-badge-id')!.textContent      = id      ? `id: ${id.slice(0, 8)}…` : '';
+    document.getElementById('modal-badge-reviews')!.textContent = reviews ? `${reviews} reviews`      : '';
+
+    const dot    = document.getElementById('modal-status-dot')!;
+    const status = card.dataset.modalStatus ?? 'in-stock';
+    const colors: Record<string, string> = { 'in-stock': '#79A465', 'low-stock': '#F59D76', 'out-of-stock': '#B5514C' };
+    const labels: Record<string, string> = { 'in-stock': 'In stock', 'low-stock': 'Low stock', 'out-of-stock': 'Out of stock' };
+    dot.style.backgroundColor = colors[status] ?? colors['in-stock'];
+    dot.title = labels[status] ?? '';
+
+    const ratingEl  = document.getElementById('modal-rating')!;
+    const ratingVal = parseFloat(card.dataset.modalRating ?? '');
+    ratingEl.innerHTML = '';
+    if (!isNaN(ratingVal)) {
+      for (let i = 0; i < 5; i++) {
+        const fill = i < Math.floor(ratingVal) ? 100 : i === Math.floor(ratingVal) ? (ratingVal % 1) * 100 : 0;
+        ratingEl.insertAdjacentHTML('beforeend', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1.1em;height:1.1em;fill:currentColor;stroke:currentColor;stroke-width:1.5;mask-image:linear-gradient(to right,black ${fill}%,rgba(0,0,0,0.15) ${fill}%)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`);
+      }
+    }
+
+    descEl.textContent = card.dataset.modalDesc ?? '';
+    descEl.classList.add('line-clamp-5');
+    moreBtn.classList.add('hidden');
+    requestAnimationFrame(() => {
+      if (descEl.scrollHeight > descEl.clientHeight + 2) moreBtn.classList.remove('hidden');
+    });
+
+    const ing = card.dataset.modalIngredients ?? '';
+    ingredientsText.textContent = ing || 'Ingredient information is not available for this product.';
+    ingredientsBtn.style.display = ing ? '' : 'none';
+
+    ingredientsOpen = false;
+    modalPanel.style.maxWidth              = '';
+    ingredientsPanel.style.width           = '0';
+    ingredientsPanel.style.borderLeftWidth = '0';
+    ingredientsContent.style.opacity       = '0';
+    delete ingredientsBtn.dataset.open;
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    descEl.classList.add('line-clamp-5');
+    moreBtn.classList.add('hidden');
+    modalPanel.style.maxWidth              = '';
+    ingredientsPanel.style.width           = '0';
+    ingredientsPanel.style.borderLeftWidth = '0';
+    ingredientsContent.style.opacity       = '0';
+    ingredientsOpen = false;
+    delete ingredientsBtn.dataset.open;
+  }
+
+  ingredientsBtn.addEventListener('click', toggleIngredients);
+
+  moreBtn.addEventListener('click', () => {
+    descEl.classList.remove('line-clamp-5');
+    moreBtn.classList.add('hidden');
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-open-modal]').forEach(card => {
+    card.addEventListener('click', e => {
+      e.preventDefault();
+      openModal(card);
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+
+<style>
+  .modal-panel {
+    animation: modal-in 0.18s ease;
+  }
+  @keyframes modal-in {
+    from { opacity: 0; transform: scale(0.96) translateY(8px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0);   }
+  }
+
+  #ingredients-btn[data-open='true'] {
+    background-color: #a0b87a;
+    color: white;
+    border-color: #a0b87a;
+  }
+  :global(.dark) #ingredients-btn[data-open='true'] {
+    background-color: #4a6a2a;
+    border-color: #4a6a2a;
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+interface Filter {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  filters: Filter[];
+}
+
+const { filters } = Astro.props;
+---
+
+<div id="filter-bar-sentinel" class="h-px -mb-px" aria-hidden="true"></div>
+
+<div
+  id="filter-bar"
+  class="sticky top-[48px] z-40 rounded-xl bg-[#d98070]/65 dark:bg-[#812923]/65 backdrop-blur-xl px-6 py-4 mb-6 flex items-center gap-3 flex-wrap shadow-sm transition-[border-radius] duration-200"
+>
+  <span class="font-bold text-white sm:text-lg ">Filters</span>
+  {filters.map((f, i) => (
+    <button
+      data-filter={f.value}
+      data-active={i === 0 ? 'true' : 'false'}
+      class="filter-btn px-2 md:px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold transition-all cursor-pointer border-0"
+    >
+      {f.label}
+    </button>
+  ))}
+</div>
+
+<script>
+  const sentinel = document.getElementById('filter-bar-sentinel')!;
+  const bar      = document.getElementById('filter-bar')!;
+
+  new IntersectionObserver(
+    ([entry]) => bar.classList.toggle('is-stuck', !entry.isIntersecting),
+    { threshold: 0, rootMargin: `-48px 0px 0px 0px` }
+  ).observe(sentinel);
+</script>
+
+<style>
+  .filter-btn {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
+  }
+  .filter-btn:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+  .filter-btn[data-active='true'] {
+    background-color: white;
+    color: #d98070;
+  }
+
+  #filter-bar.is-stuck {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+</style>

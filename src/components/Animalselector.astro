@@ -1,26 +1,15 @@
----
-interface Props {
-  lang?: 'en' | 'fr';
-}
-const { lang = 'en' } = Astro.props;
-const t = {
-  en: { heading: 'Who would you like to read about?', dogs: 'Dogs', cats: 'Cats' },
-  fr: { heading: 'Sur qui souhaitez-vous en savoir plus\u00a0?', dogs: 'Chiens', cats: 'Chats' },
-}[lang];
----
 
 <section class="min-h-screen flex flex-col items-center justify-center gap-8 md:gap-12 bg-[#29524A] px-6 py-12 font-serif">
 
   <h1 class="m-0 text-xl sm:text-2xl md:text-3xl font-bold text-center leading-snug tracking-wide text-[#f5f0eb] max-w-[28ch] sm:max-w-[34ch]">
-    {t.heading}
+    Who are we buying for?
   </h1>
 
   <div class="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-12 md:gap-20">
 
-    <!-- Dogs card -->
+    <!-- Dogs -->
     <a
-      href={`/${lang}/dogs`}
-      aria-label={t.dogs}
+      href={`/dogs`}
       class="group flex flex-col items-center gap-4 no-underline cursor-pointer"
     >
       <div class="
@@ -34,21 +23,20 @@ const t = {
       ">
         <img
           src="/dog-silhouette.png"
-          alt={t.dogs}
+          alt="dogs"
           width="140"
           height="140"
           class="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] md:w-[140px] md:h-[140px] object-contain transition-[filter] duration-300 group-focus-visible:invert"
         />
       </div>
       <span class="text-[#7aba98] text-base md:text-lg font-semibold tracking-widest transition-colors duration-300 group-hover:text-[#f5f0eb]">
-        {t.dogs}
+        Dogs
       </span>
     </a>
 
-    <!-- Cats card -->
+    <!-- Cats -->
     <a
-      href={`/${lang}/cats`}
-      aria-label={t.cats}
+      href={`/cats`}
       class="group flex flex-col items-center gap-4 no-underline cursor-pointer"
     >
       <div class="
@@ -62,14 +50,14 @@ const t = {
       ">
         <img
           src="/cat-silhouette.png"
-          alt={t.cats}
+          alt="cats"
           width="140"
           height="140"
           class="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] md:w-[140px] md:h-[140px] object-contain transition-[filter] duration-300 group-focus-visible:invert"
         />
       </div>
       <span class="text-[#7aba98] text-base md:text-lg font-semibold tracking-widest transition-colors duration-300 group-hover:text-[#f5f0eb]">
-        {t.cats}
+        Cats
       </span>
     </a>
 

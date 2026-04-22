@@ -1,0 +1,40 @@
+---
+import type { HTMLAttributes } from "astro/types"
+import { cn } from "@/lib/utils"
+
+interface Props extends HTMLAttributes<"div"> {
+  rating?: number
+}
+
+const { rating, class: className, ...props } = Astro.props
+---
+
+{
+  rating && (
+    <div class={cn("flex gap-1 text-base", className)} {...props}>
+      {Array.from({ length: 5 }).map((_, index) => {
+        const fillPct =
+          index < Math.floor(rating)
+            ? 100
+            : index === Math.floor(rating)
+              ? (rating % 1) * 100
+              : 0
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="size-[1em]"
+            fill="currentColor"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style={`mask-image: linear-gradient(to right, black ${fillPct}%, rgba(0,0,0,0.15) ${fillPct}%);`}
+          >
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+        )
+      })}
+    </div>
+  )
+}

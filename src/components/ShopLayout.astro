@@ -1,0 +1,163 @@
+---
+import Marquee from "@/components/ui/marquee/marquee.astro"
+import MarqueeContent from "@/components/ui/marquee/marquee-content.astro"
+
+import Navbar from './Navbar.astro';
+import ShopSidebar from './ShopSidebar.astro';
+import ProductModal from './ProductModal.astro';
+import '../styles/global.css';
+
+interface Props {
+  animal?: 'cats' | 'dogs';
+  title: string;
+  categories: string[];
+}
+
+const { animal, title, categories } = Astro.props;
+
+const marqueeItems = ['Free shipping over $49', 'New arrivals every week', 'Vet-approved products', 'Trusted by 10,000+ pet owners', 'Natural & organic options', 'Parasite prevention in stock']
+---
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-[#f5f0eb] dark:bg-[#201F1E] font-['Inria_Sans',sans-serif]">
+    <script is:inline>
+      (function () {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+
+    <Navbar animal={animal} />
+    <ProductModal />
+
+    <div class="flex">
+
+      <ShopSidebar categories={categories} />
+
+      <!-- Right column -->
+      <div class="flex-1 min-w-0 flex flex-col min-h-[calc(100vh-48px)]">
+
+        <main class="flex-1 bg-white dark:bg-[#201F1E] px-4 sm:px-8 md:px-10 py-6">
+          <slot />
+        </main>
+
+        <Marquee class="bg-[#f5f0eb] dark:bg-[#575757] py-4 mask-x-from-95%">
+          <MarqueeContent pauseOnHover={true} direction="right">
+            {marqueeItems.map((item: string) => (
+              <span class="text-sm text-[#774A33] dark:text-[#D49E84] px-8 shrink-0">{item}</span>
+            ))}
+          </MarqueeContent>
+        </Marquee>
+
+      </div>
+
+    </div>
+
+    <button
+      id="backToTop"
+      aria-label="Back to top"
+      title="Back to top"
+      class="
+        fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-6 z-50
+        w-13 h-13 rounded-full border-0
+        bg-[#7a9070] dark:bg-[#686868] text-white text-lg leading-none
+        shadow-[0_3px_12px_rgba(0,0,0,0.2)]
+        cursor-pointer
+        opacity-0 pointer-events-none
+        transition-all duration-300 ease-in-out
+        hover:bg-[#2d5a4e] hover:-translate-y-0.5 dark:hover:bg-[#94A87C]
+      "
+    >↑</button>
+
+  </body>
+
+  <script>
+    let activeCat   = 'all';
+    let activeSub   = 'all';
+    let activeQuery = '';
+
+    function refresh() {
+      document.querySelectorAll<HTMLElement>('[data-category]').forEach(card => {
+        const catOk   = activeCat   === 'all' || card.dataset.category    === activeCat;
+        const subOk   = activeSub   === 'all' || card.dataset.subcategory === activeSub;
+        const searchText = card.dataset.search ?? card.querySelector('span')?.textContent?.toLowerCase() ?? '';
+        const queryOk = activeQuery === '' || searchText.includes(activeQuery);
+        card.style.display = catOk && subOk && queryOk ? '' : 'none';
+      });
+    }
+
+    document.addEventListener('petcare:search', (e) => {
+      activeQuery = (e as CustomEvent<{ query: string }>).detail.query.toLowerCase();
+      refresh();
+    });
+
+    function syncFilterBar() {
+      const available = new Set<string>();
+      document.querySelectorAll<HTMLElement>('[data-category]').forEach(card => {
+        if (activeCat === 'all' || card.dataset.category === activeCat) {
+          if (card.dataset.subcategory) available.add(card.dataset.subcategory);
+        }
+      });
+
+      document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(btn => {
+        const val = btn.dataset.filter ?? 'all';
+        btn.style.display = (val === 'all' || available.has(val)) ? '' : 'none';
+        btn.dataset.active = val === 'all' ? 'true' : 'false';
+      });
+
+      activeSub = 'all';
+    }
+
+    document.querySelectorAll<HTMLButtonElement>('[data-cat-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeCat = btn.dataset.catFilter ?? 'all';
+        document.querySelectorAll<HTMLButtonElement>('[data-cat-filter]').forEach(b => {
+          b.dataset.active = b.dataset.catFilter === activeCat ? 'true' : 'false';
+        });
+        syncFilterBar();
+        refresh();
+      });
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeSub = btn.dataset.filter ?? 'all';
+        document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(b => {
+          b.dataset.active = b.dataset.filter === activeSub ? 'true' : 'false';
+        });
+        refresh();
+      });
+    });
+
+    const btn = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        if (!btn) return;
+        if (window.scrollY > 300) {
+          btn.classList.remove('opacity-0', 'pointer-events-none');
+          btn.classList.add('opacity-100', 'pointer-events-auto');
+        } else {
+          btn.classList.add('opacity-0', 'pointer-events-none');
+          btn.classList.remove('opacity-100', 'pointer-events-auto');
+        }
+      });
+      btn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  </script>
+
+</html>

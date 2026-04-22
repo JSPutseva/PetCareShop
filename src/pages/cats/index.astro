@@ -1,0 +1,51 @@
+---
+import ShopLayout  from '../../components/ShopLayout.astro';
+import Banner      from '../../components/Banner.astro';
+import FilterBar   from '../../components/FilterBar.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import allProducts from '../../data/products.json';
+
+const products = allProducts.filter(p => p.animal === 'cats');
+
+const categories = ['Food', 'Accessories', 'Hygiene', 'Health', 'Toys'];
+
+const subcategories = [...new Set(products.map(p => p.subcategory))].sort();
+const filters = [
+  { label: 'All', value: 'all' },
+  ...subcategories.map(s => ({
+    label: s.charAt(0).toUpperCase() + s.slice(1),
+    value: s,
+  })),
+];
+---
+
+<ShopLayout animal="cats" title="Cats — PetCareShop" categories={categories}>
+
+  <Banner
+    title="Cats"
+    subtitle="Everything your cat needs, carefully selected"
+    animal="cats"
+  />
+
+  <FilterBar filters={filters} />
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    {products.map(p => (
+      <ProductCard
+        productId={p.id}
+        title={p.name}
+        brand={p.brand ?? undefined}
+        description={p.description ?? undefined}
+        ingredients={p.ingredients ?? undefined}
+        reviewCount={p.reviewCount ?? undefined}
+        image={p.image ?? undefined}
+        category={p.category}
+        subcategory={p.subcategory}
+        status={p.availability as 'in-stock' | 'out-of-stock'}
+        price={`$${p.price?.toFixed(2)}`}
+        rating={p.rating ?? undefined}
+      />
+    ))}
+  </div>
+
+</ShopLayout>

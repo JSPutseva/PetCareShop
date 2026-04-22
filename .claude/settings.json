@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm dev *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/dogs/)",
+      "Bash(curl -s http://localhost:4322/dogs/)",
+      "Bash(curl -s http://localhost:4322/cats/)",
+      "Bash(pkill -f \"astro dev\")",
+      "Bash(pnpm add *)",
+      "Bash(pnpm install *)",
+      "Bash(node scripts/transform-products.mjs)",
+      "Bash(node -e ' *)",
+      "Bash(node_modules/.bin/astro check *)",
+      "WebFetch(domain:fulldev.ui.com)",
+      "WebFetch(domain:ui.full.dev)",
+      "Bash(node -e \"const p = require\\('./src/data/products.json'\\); console.log\\('total:', p.length, '| with rating:', p.filter\\(x=>x.rating\\).length, '| sample:', JSON.stringify\\(p.find\\(x=>x.rating\\)\\)?.slice\\(0,120\\)\\)\")",
+      "Bash(node -e \"const p = require\\('./src/data/products.json'\\); console.log\\(Object.keys\\(p[0]\\)\\)\")",
+      "Bash(node -e \"const p = require\\('./src/data/products.json'\\); const withIng = p.filter\\(x=>x.ingredients\\); console.log\\('with ingredients:', withIng.length\\); console.log\\('sample:', withIng[0]?.ingredients?.slice\\(0,120\\)\\)\")"
+    ],
+    "additionalDirectories": [
+      "/home/jeannap/Projects/PetCareShop"
+    ]
+  }
+}

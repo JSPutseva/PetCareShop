@@ -2,11 +2,10 @@
 import AnimalSelector from '../components/Animalselector.astro';
 import '../styles/global.css';
 
-const lang = 'en';
 ---
 
 <!doctype html>
-<html lang={lang} class="h-full">
+<html class="h-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,6 +19,6 @@ const lang = 'en';
     />
   </head>
   <body class="h-full m-0 p-0 font-['Inria_Sans',sans-serif]">
-    <AnimalSelector lang={lang} />
+    <AnimalSelector />
   </body>
 </html>

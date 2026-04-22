@@ -1,0 +1,114 @@
+---
+import { ThemeToggle } from "@/components/ui/theme-toggle"
+
+interface Props {
+  categories: string[];
+}
+
+const { categories } = Astro.props;
+---
+
+<!-- Backdrop (mobile only) -->
+<div
+  id="sidebar-backdrop"
+  class="hidden fixed inset-0 z-45 bg-black/40 md:hidden"
+  aria-hidden="true"
+></div>
+
+<!-- Fixed sidebar -->
+<aside
+  id="shop-sidebar"
+  class="
+    hidden md:flex flex-col
+    fixed top-12 left-0 z-50
+    w-40 h-[calc(100vh-48px)]
+    bg-[#EDC8C4] dark:bg-[#343434]
+    px-3 pt-6 pb-8 gap-1
+    overflow-y-auto
+  "
+  aria-label="Product categories"
+>
+  <p class="text-[13px] font-bold uppercase tracking-widest text-[#9a6a55] dark:text-[#A9AFA0] mb-2 px-2">
+    Categories
+  </p>
+
+  <button
+    data-cat-filter="all"
+    data-active="true"
+    class="cat-btn text-left rounded-lg px-2 py-1.5 text-sm font-semibold cursor-pointer border-0 w-full"
+  >
+    All
+  </button>
+
+  {categories.map(cat => (
+    <button
+      data-cat-filter={cat.toLowerCase()}
+      data-active="false"
+      class="cat-btn text-left rounded-lg px-2 py-1.5 text-sm font-semibold cursor-pointer border-0 w-full"
+    >
+      {cat}
+    </button>
+  ))}
+
+  <ThemeToggle class="text-[#187f01] dark:text-[#e07771]" />
+
+</aside>
+
+<div class="hidden md:block w-40 shrink-0" aria-hidden="true"></div>
+
+<script>
+  const sidebar  = document.getElementById('shop-sidebar')!;
+  const backdrop = document.getElementById('sidebar-backdrop')!;
+
+  function openSidebar() {
+    sidebar.classList.remove('hidden');
+    sidebar.classList.add('flex');
+    backdrop.classList.remove('hidden');
+  }
+
+  function closeSidebar() {
+    if (window.innerWidth < 768) {
+      sidebar.classList.add('hidden');
+      sidebar.classList.remove('flex');
+      backdrop.classList.add('hidden');
+    }
+  }
+
+  document.addEventListener('petcare:sidebar-toggle', () => {
+    const isOpen = !sidebar.classList.contains('hidden');
+    isOpen ? closeSidebar() : openSidebar();
+  });
+
+  backdrop.addEventListener('click', closeSidebar);
+
+  sidebar.querySelectorAll<HTMLButtonElement>('[data-cat-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (window.innerWidth < 768) closeSidebar();
+    });
+  });
+</script>
+
+<style>
+  .cat-btn {
+    background: transparent;
+    color: #774A33;
+  }
+  :global(.dark) .cat-btn {
+    color: #FFC195;
+  }
+  .cat-btn:hover {
+    background-color: #deafaa;
+    color: white;
+  }
+  :global(.dark) .cat-btn:hover {
+    background-color: rgba(133, 46, 46, 0.4);
+    color: white;
+  }
+  .cat-btn[data-active='true'] {
+    background-color: #c98c7a;
+    color: white;
+  }
+  :global(.dark) .cat-btn[data-active='true'] {
+    background-color: #7a4535;
+  }
+</style>

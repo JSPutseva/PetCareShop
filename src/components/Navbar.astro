@@ -1,350 +1,199 @@
 ---
 interface Props {
-  lang?: 'en' | 'fr';
   animal?: 'cats' | 'dogs';
 }
-const { lang = 'en', animal } = Astro.props;
-
-const t = {
-  en: {
-    cats: 'Cats',
-    dogs: 'Dogs',
-    catsMenu: [
-      { label: 'Feeding',     href: '/en/cats#feeding' },
-      { label: 'Litter',      href: '/en/cats#litter' },
-      { label: 'Environment', href: '/en/cats#environment' },
-      { label: 'Hygiene',     href: '/en/cats#hygiene' },
-      { label: 'Health',      href: '/en/cats#health' },
-      { label: 'Walks',       href: '/en/cats#walks' },
-      { label: 'Behaviour',   href: '/en/cats#behaviour' },
-    ],
-    dogsMenu: [
-      { label: 'Feeding',     href: '/en/dogs#feeding' },
-      { label: 'Environment', href: '/en/dogs#environment' },
-      { label: 'Hygiene',     href: '/en/dogs#hygiene' },
-      { label: 'Health',      href: '/en/dogs#health' },
-      { label: 'Walks',       href: '/en/dogs#walks' },
-      { label: 'Behaviour',   href: '/en/dogs#behaviour' },
-    ],
-    catsFull: 'All about cats →',
-    dogsFull: 'All about dogs →',
-    fontSizes: ['Standard', 'Medium', 'Large'],
-  },
-  fr: {
-    cats: 'Chats',
-    dogs: 'Chiens',
-    catsMenu: [
-      { label: 'Alimentation', href: '/fr/cats#alimentation' },
-      { label: 'Litière',      href: '/fr/cats#litiere' },
-      { label: 'Environnement',href: '/fr/cats#environnement' },
-      { label: 'Hygiène',      href: '/fr/cats#hygiene' },
-      { label: 'Santé',        href: '/fr/cats#sante' },
-      { label: 'Promenades',   href: '/fr/cats#promenades' },
-      { label: 'Comportement', href: '/fr/cats#comportement' },
-    ],
-    dogsMenu: [
-      { label: 'Alimentation', href: '/fr/dogs#alimentation' },
-      { label: 'Environnement',href: '/fr/dogs#environnement' },
-      { label: 'Hygiène',      href: '/fr/dogs#hygiene' },
-      { label: 'Santé',        href: '/fr/dogs#sante' },
-      { label: 'Promenades',   href: '/fr/dogs#promenades' },
-      { label: 'Comportement', href: '/fr/dogs#comportement' },
-    ],
-    catsFull: 'Tout sur les chats →',
-    dogsFull: 'Tout sur les chiens →',
-    fontSizes: ['Standard', 'Moyen', 'Grand'],
-  },
-}[lang];
-
-const otherLang    = lang === 'en' ? 'fr' : 'en';
-const otherLangUrl = Astro.url.pathname.replace(`/${lang}/`, `/${otherLang}/`);
+const { animal } = Astro.props;
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-2.5 bg-[#7a9070] dark:bg-[#443331] h-[48px]">
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 bg-[#7a9070] dark:bg-[#443331] h-12">
 
-  <div class="flex items-center gap-2 sm:gap-3">
-
-    <!-- Hamburger -->
+  <!-- Left: burger + animal switcher -->
+  <div class="flex items-center gap-2">
     <button
-      id="sidebar-toggle"
-      aria-label="Toggle menu"
-      class="md:hidden flex flex-col justify-center gap-[5px] w-8 h-8 bg-transparent border-0 cursor-pointer p-1 shrink-0"
+      id="sidebar-burger"
+      aria-label="Toggle categories"
+      class="md:hidden p-1.5 rounded-md border-0 cursor-pointer text-[#f5f0eb] bg-transparent hover:bg-white/20 transition-colors"
     >
-      <span class="block w-full h-[2px] bg-[#f5f0eb] rounded"></span>
-      <span class="block w-full h-[2px] bg-[#f5f0eb] rounded"></span>
-      <span class="block w-full h-[2px] bg-[#f5f0eb] rounded"></span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6"  x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
     </button>
-
-    <!-- CATS -->
-    <div id="dropdown-cats" class="relative group">
-      <!-- Desktop -->
-      <a
-        href={`/${lang}/cats`}
-        class:list={[
-          'hidden md:inline-block px-5 py-1.5 rounded-md text-[#f5f0eb] text-sm font-semibold tracking-wide no-underline transition-all duration-200',
-          animal === 'cats' ? 'bg-[#1e3d34] dark:bg-[#1C0502]' : 'bg-[#2d5a4e] dark:bg-[#65231B] hover:bg-[#1e3d34] dark:hover:bg-[#63342E]',
-        ]}
-      >{t.cats}</a>
-      <!-- Mobile -->
-      <button
-        id="btn-cats"
-        class:list={[
-          'md:hidden px-3 py-1.5 rounded-md text-[#f5f0eb] text-sm font-semibold tracking-wide border-0 cursor-pointer transition-all duration-200',
-          animal === 'cats' ? 'bg-[#1e3d34] dark:bg-[#1C0502]' : 'bg-[#2d5a4e] dark:bg-[#65231B]',
-        ]}
-      >{t.cats}</button>
-      <div class="absolute left-0 top-full h-2 w-full"></div>
-      <ul id="menu-cats" class="
-        absolute top-[calc(100%+8px)] left-0 z-50
-        min-w-[160px] 
-        bg-[#2d5a4e] dark:bg-[#32130F]
-        rounded-md py-1.5
-        shadow-[0_8px_24px_rgba(0,0,0,0.22)] list-none m-0
-        invisible opacity-0 translate-y-1
-        group-hover:visible group-hover:opacity-100 group-hover:translate-y-0
-        group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0
-        transition-all duration-150
-      ">
-        <li class="md:hidden border-b border-[rgba(245,240,235,0.25)]">
-          <a href={`/${lang}/cats`} class="block px-4 py-2 text-[#f5f0eb] text-sm font-semibold no-underline hover:bg-[#DED8BF] dark:hover:bg-[#F3C2BC] hover:text-[#29524A] transition-colors duration-150">
-            {t.catsFull}
-          </a>
-        </li>
-        {t.catsMenu.map(item => (
-          <li>
-            <a href={item.href} class="block px-4 py-2 text-[#f5f0eb] text-sm no-underline border-b border-[rgba(245,240,235,0.12)] last:border-b-0 hover:bg-[#DED8BF] dark:hover:bg-[#F3C2BC] hover:text-[#29524A] dark:hover:text-[#32130F] transition-colors duration-150">
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-
-    <!-- DOGS -->
-    <div id="dropdown-dogs" class="relative group">
-      <a
-        href={`/${lang}/dogs`}
-        class:list={[
-          'hidden md:inline-block px-5 py-1.5 rounded-md text-[#f5f0eb] text-sm font-semibold tracking-wide no-underline transition-all duration-200',
-          animal === 'dogs' ? 'bg-[#1e3d34] dark:bg-[#1C0502]' : 'bg-[#2d5a4e]  dark:bg-[#65231BF] hover:bg-[#1e3d34] dark:hover:bg-[#63342E]',
-        ]}
-      >{t.dogs}</a>
-      <button
-        id="btn-dogs"
-        class:list={[
-          'md:hidden px-3 py-1.5 rounded-md text-[#f5f0eb] text-sm font-semibold tracking-wide border-0 cursor-pointer transition-all duration-200',
-          animal === 'dogs' ? 'bg-[#1e3d34] dark:bg-[#1C0502]' : 'bg-[#2d5a4e] dark:bg-[#65231BF]',
-        ]}
-      >{t.dogs}</button>
-      <div class="absolute left-0 top-full h-2 w-full"></div>
-      <ul id="menu-dogs" class="
-        absolute top-[calc(100%+8px)] left-0 z-50
-        min-w-[160px] 
-        bg-[#2d5a4e] dark:bg-[#32130F]
-        rounded-md py-1.5
-        shadow-[0_8px_24px_rgba(0,0,0,0.22)] list-none m-0
-        invisible opacity-0 translate-y-1
-        group-hover:visible group-hover:opacity-100 group-hover:translate-y-0
-        group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0
-        transition-all duration-150
-      ">
-        <li class="md:hidden border-b border-[rgba(245,240,235,0.25)]">
-          <a href={`/${lang}/dogs`} class="block px-4 py-2 text-[#f5f0eb] text-sm font-semibold no-underline hover:bg-[#DED8BF] dark:hover:bg-[#F3C2BC] hover:text-[#29524A] transition-colors duration-150">
-            {t.dogsFull}
-          </a>
-        </li>
-        {t.dogsMenu.map(item => (
-          <li>
-            <a href={item.href} class="block px-4 py-2 text-[#f5f0eb] text-sm no-underline border-b border-[rgba(245,240,235,0.12)] last:border-b-0 hover:bg-[#DED8BF] dark:hover:bg-[#F3C2BC] hover:text-[#29524A] dark:hover:text-[#32130F] transition-colors duration-150">
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-
+    <a
+      href="/cats"
+      class:list={[
+        'px-5 py-1.5 rounded-md text-[#f5f0eb] text-sm font-semibold tracking-wide no-underline transition-all duration-200',
+        animal === 'cats' ? 'bg-[#1e3d34] dark:bg-[#1C0502]' : 'bg-[#2d5a4e] dark:bg-[#65231B] hover:bg-[#1e3d34] dark:hover:bg-[#63342E]',
+      ]}
+    >Cats</a>
+    <a
+      href="/dogs"
+      class:list={[
+        'px-5 py-1.5 rounded-md text-[#f5f0eb] text-sm font-semibold tracking-wide no-underline transition-all duration-200',
+        animal === 'dogs' ? 'bg-[#1e3d34] dark:bg-[#1C0502]' : 'bg-[#2d5a4e] dark:bg-[#65231B] hover:bg-[#1e3d34] dark:hover:bg-[#63342E]',
+      ]}
+    >Dogs</a>
   </div>
 
-  <!-- Right-side controls -->
+  <!-- Right: search + font size -->
   <div class="flex items-center gap-2">
 
-    <!-- Font Size -->
+    <div id="search-wrap" class="flex items-center gap-1">
+      <input
+        id="nav-search"
+        type="search"
+        placeholder="Search products…"
+        aria-label="Search products"
+        class="
+          hidden sm:block
+          w-40 md:w-56
+          px-3 py-1 rounded-md text-sm
+          bg-white/20 text-[#f5f0eb] placeholder-[#d4e8d0]
+          border border-white/30 outline-none
+          focus:bg-white/30 focus:w-64 transition-all duration-200
+        "
+      />
+      <button
+        id="search-toggle"
+        aria-label="Search"
+        class="sm:hidden p-1.5 rounded-md bg-transparent border-0 cursor-pointer text-[#f5f0eb] hover:bg-white/20 transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+    </div>
+
     <div id="dropdown-font" class="relative">
       <button
         id="font-trigger"
         aria-label="Font size"
-        class="px-3 py-1 rounded-md border-0 cursor-pointer bg-[#e8c4b8] text-[#2d5a4e] dark:text-[#4A2C28] font-bold tracking-wider hover:bg-[#d4a898] transition-colors duration-200 flex items-baseline gap-px leading-none"
+        class="px-3 py-1 rounded-md border-0 cursor-pointer bg-[#e8c4b8] text-[#2d5a4e] dark:text-[#4A2C28] font-bold hover:bg-[#d4a898] transition-colors duration-200 flex items-baseline gap-px leading-none"
       >
-        <!-- placeholder: swap these spans for your icon later -->
-        <span id="font-icon-big" class="leading-none" style="font-size:13px">A</span><span id="font-icon-small" class="leading-none" style="font-size:9px">A</span>
+        <span id="font-icon-big"  style="font-size:13px">A</span>
+        <span id="font-icon-small" style="font-size:9px">A</span>
       </button>
       <div class="absolute right-0 top-full h-2 w-full"></div>
-      <ul id="menu-font" class="
-        absolute top-[calc(100%+8px)] right-0 z-50
-        min-w-27.5
-        bg-[#2d5a4e] dark:bg-[#32130F]
-        rounded-md py-1.5
-        shadow-[0_8px_24px_rgba(0,0,0,0.22)] list-none m-0
-        invisible opacity-0 translate-y-1
-        transition-all duration-150
-      ">
+      <ul
+        id="menu-font"
+        class="
+          absolute top-[calc(100%+8px)] right-0 z-50
+          min-w-30
+          bg-[#2d5a4e] dark:bg-[#32130F]
+          rounded-md py-1.5
+          shadow-[0_8px_24px_rgba(0,0,0,0.22)] list-none m-0
+          invisible opacity-0 translate-y-1
+          transition-all duration-150
+        "
+      >
         {(['100', '115', '130'] as const).map((size, i) => (
           <li>
             <button
               data-size={size}
               class:list={[
-                'font-size-opt w-full text-left px-4 py-2 text-[#f5f0eb] text-sm border-0 bg-transparent cursor-pointer hover:bg-[#DED8BF] dark:hover:bg-[#C79089] hover:text-[#29524A] dark:hover:text-[#32130F] transition-colors duration-150',
+                'font-size-opt w-full text-left px-4 py-2 text-[#f5f0eb] text-sm border-0 bg-transparent cursor-pointer hover:bg-[#DED8BF] dark:hover:bg-[#C79089] hover:text-[#29524A] transition-colors duration-150',
                 i < 2 && 'border-b border-[rgba(245,240,235,0.12)]',
               ]}
-            >{t.fontSizes[i]}</button>
-          </li>
-        ))}
-      </ul>
-    </div>
-
-    <!-- Language switcher -->
-    <div id="dropdown-lang" class="relative">
-      <button
-        id="lang-trigger"
-        class="px-3 py-1 rounded-md border-0 cursor-pointer bg-[#e8c4b8] text-[#2d5a4e] dark:text-[#4A2C28] text-xs font-bold tracking-wider hover:bg-[#d4a898] transition-colors duration-200 flex items-center gap-1"
-      >
-        {lang.toUpperCase()}
-        <svg class="w-3 h-3 opacity-60" viewBox="0 0 10 6" fill="currentColor">
-          <path d="M0 0l5 6 5-6z"/>
-        </svg>
-      </button>
-      <div class="absolute right-0 top-full h-2 w-full"></div>
-      <ul id="menu-lang" class="
-        absolute top-[calc(100%+8px)] right-0 z-50
-        min-w-20
-        bg-[#2d5a4e] dark:bg-[#32130F]
-        rounded-md py-1.5
-        shadow-[0_8px_24px_rgba(0,0,0,0.22)] list-none m-0
-        invisible opacity-0 translate-y-1
-        transition-all duration-150
-      ">
-        {(['en', 'fr'] as const).map(l => (
-          <li>
-            <a
-              href={l === lang ? '#' : otherLangUrl}
-              class:list={[
-                'block px-4 py-2 text-sm no-underline transition-colors duration-150',
-                l === lang
-                  ? 'text-[#f5f0eb] font-bold bg-[rgba(255,255,255,0.1)] cursor-default'
-                  : 'text-[#f5f0eb] hover:bg-[#DED8BF] dark:hover:bg-[#C79089] hover:text-[#29524A] dark:hover:text-[#32130F]',
-              ]}
-            >
-              {l === 'en' ? 'English' : 'Français'}
-            </a>
+            >{(['Standard', 'Medium', 'Large'])[i]}</button>
           </li>
         ))}
       </ul>
     </div>
 
   </div>
-
 </nav>
 
 <div class="h-[48px]" aria-hidden="true"></div>
 
+<!-- Mobile search bar -->
+<div
+  id="mobile-search-bar"
+  class="hidden sm:hidden fixed top-12 left-0 right-0 z-40 bg-[#7a9070] dark:bg-[#443331] px-4 py-2"
+>
+  <input
+    id="nav-search-mobile"
+    type="search"
+    placeholder="Search products…"
+    aria-label="Search products"
+    class="w-full px-3 py-1.5 rounded-md text-sm bg-white/20 text-[#f5f0eb] placeholder-[#d4e8d0] border border-white/30 outline-none focus:bg-white/30"
+  />
+</div>
+
 <script>
-  // --- Font size: apply saved preference immediately to avoid flash ---
   const FONT_KEY = 'petcare-font-size';
+  const FONT_ICON_SIZES: Record<string, [number, number]> = {
+    '100': [13, 9], '115': [15, 10], '130': [17, 12],
+  };
+
   const savedSize = localStorage.getItem(FONT_KEY) || '100';
   document.documentElement.style.fontSize = savedSize === '100' ? '' : `${savedSize}%`;
 
-  const FONT_ICON_SIZES: Record<string, [number, number]> = {
-    '100': [13, 9],
-    '115': [15, 10],
-    '130': [17, 12],
-  };
-
   function syncFontIcon(size: string) {
     const [big, small] = FONT_ICON_SIZES[size] ?? FONT_ICON_SIZES['100'];
-    (document.getElementById('font-icon-big') as HTMLElement).style.fontSize = `${big}px`;
+    (document.getElementById('font-icon-big')  as HTMLElement).style.fontSize = `${big}px`;
     (document.getElementById('font-icon-small') as HTMLElement).style.fontSize = `${small}px`;
   }
-
   syncFontIcon(savedSize);
 
-  // --- Menu helpers ---
-  function isMenuOpen(id: string) {
-    return !document.getElementById(id)?.classList.contains('invisible');
-  }
-
-  function openMenu(id: string) {
-    const menu = document.getElementById(id);
-    if (!menu) return;
-    menu.classList.remove('invisible', 'opacity-0', 'translate-y-1');
-    menu.classList.add('visible', 'opacity-100', 'translate-y-0');
-  }
-
-  function closeMenu(id: string) {
-    const menu = document.getElementById(id);
-    if (!menu) return;
-    menu.classList.add('invisible', 'opacity-0', 'translate-y-1');
-    menu.classList.remove('visible', 'opacity-100', 'translate-y-0');
-  }
-
-  function closeAll() {
-    ['menu-cats', 'menu-dogs', 'menu-lang', 'menu-font'].forEach(closeMenu);
-  }
-
-  // --- Font size dropdown ---
   function syncFontButtons() {
     const current = localStorage.getItem(FONT_KEY) || '100';
     document.querySelectorAll<HTMLButtonElement>('.font-size-opt').forEach(btn => {
-      const active = btn.dataset.size === current;
-      btn.classList.toggle('font-bold', active);
-      btn.classList.toggle('bg-[rgba(255,255,255,0.12)]', active);
+      btn.classList.toggle('font-bold', btn.dataset.size === current);
+      btn.classList.toggle('bg-[rgba(255,255,255,0.12)]', btn.dataset.size === current);
     });
   }
 
-  document.getElementById('font-trigger')?.addEventListener('click', (e) => {
+  const fontMenu = document.getElementById('menu-font')!;
+  document.getElementById('font-trigger')?.addEventListener('click', e => {
     e.stopPropagation();
-    const open = isMenuOpen('menu-font');
-    closeAll();
-    if (!open) {
-      openMenu('menu-font');
-      syncFontButtons();
-    }
+    const opening = fontMenu.classList.contains('invisible');
+    fontMenu.classList.toggle('invisible', !opening);
+    fontMenu.classList.toggle('opacity-0',  !opening);
+    fontMenu.classList.toggle('translate-y-1', !opening);
+    if (opening) syncFontButtons();
   });
 
   document.querySelectorAll<HTMLButtonElement>('.font-size-opt').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', e => {
       e.stopPropagation();
       const size = btn.dataset.size ?? '100';
       localStorage.setItem(FONT_KEY, size);
       document.documentElement.style.fontSize = size === '100' ? '' : `${size}%`;
       syncFontButtons();
       syncFontIcon(size);
-      closeMenu('menu-font');
+      fontMenu.classList.add('invisible', 'opacity-0', 'translate-y-1');
     });
   });
 
-  // --- Language switcher ---
-  document.getElementById('lang-trigger')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const open = isMenuOpen('menu-lang');
-    closeAll();
-    if (!open) openMenu('menu-lang');
+  document.addEventListener('click', e => {
+    if (!document.querySelector('nav')?.contains(e.target as Node)) {
+      fontMenu.classList.add('invisible', 'opacity-0', 'translate-y-1');
+    }
   });
 
-  // --- Cats / Dogs (touch/mobile click) ---
-  const isTouch = window.matchMedia('(hover: none)').matches;
-  if (isTouch) {
-    (['cats', 'dogs'] as const).forEach(name => {
-      document.getElementById(`btn-${name}`)?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const open = isMenuOpen(`menu-${name}`);
-        closeAll();
-        if (!open) openMenu(`menu-${name}`);
-      });
-    });
+  function dispatchSearch(query: string) {
+    document.dispatchEvent(new CustomEvent('petcare:search', { detail: { query } }));
   }
 
-  // --- Close on outside click ---
-  document.addEventListener('click', (e) => {
-    if (!document.querySelector('nav')?.contains(e.target as Node)) closeAll();
+  document.getElementById('nav-search')?.addEventListener('input', e => {
+    dispatchSearch((e.target as HTMLInputElement).value.trim());
+  });
+
+  document.getElementById('nav-search-mobile')?.addEventListener('input', e => {
+    dispatchSearch((e.target as HTMLInputElement).value.trim());
+  });
+
+  const mobileBar = document.getElementById('mobile-search-bar')!;
+  document.getElementById('search-toggle')?.addEventListener('click', () => {
+    const hidden = mobileBar.classList.contains('hidden');
+    mobileBar.classList.toggle('hidden', !hidden);
+    if (hidden) (document.getElementById('nav-search-mobile') as HTMLInputElement)?.focus();
+  });
+
+  document.getElementById('sidebar-burger')?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('petcare:sidebar-toggle'));
   });
 </script>

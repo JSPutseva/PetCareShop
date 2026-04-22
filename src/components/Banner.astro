@@ -1,0 +1,33 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  animal?: 'cats' | 'dogs';
+}
+const { title, subtitle, animal } = Astro.props;
+---
+
+<div class="relative overflow-hidden rounded-xl bg-[#4a6340] dark:bg-[#243e12] px-10 py-12 mb-6 flex flex-col items-center justify-center min-h-40">
+
+  <h1 class="text-3xl font-bold text-white text-center m-0 relative z-10">{title}</h1>
+  {subtitle && <p class="text-[#c4d9b8] mt-2 text-center text-lg m-0 relative z-10">{subtitle}</p>}
+
+  {animal === 'cats' && (
+    <img
+      src="/cat-banner.png"
+      alt=""
+      aria-hidden="true"
+      class="absolute bottom-0 left-0 h-[55%] sm:h-[90%] w-auto object-contain object-bottom"
+    />
+  )}
+
+  {animal === 'dogs' && (
+    <img
+      src="/dog-banner.png"
+      alt=""
+      aria-hidden="true"
+      class="absolute bottom-0 right-0 h-[55%] sm:h-[90%] w-auto object-contain object-bottom"
+    />
+  )}
+
+</div>
