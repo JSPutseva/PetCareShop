@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge"
 
   <div id="modal-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
 
-  <div id="modal-panel" class="modal-panel relative z-10 bg-white dark:bg-[#2a1e1a] rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-row overflow-hidden transition-[max-width] duration-300 ease-in-out">
+  <div id="modal-panel" class="modal-panel relative z-10 bg-white dark:bg-[#2a1e1a] rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col sm:flex-row overflow-hidden transition-[max-width,max-height] duration-300 ease-in-out">
 
     <button
       id="modal-close"
@@ -60,14 +60,24 @@ import { Badge } from "@/components/ui/badge"
 
             <!-- Buttons -->
             <div class="flex gap-2 mt-1">
-              <button class="cursor-pointer p-1.5 rounded-lg border-0 bg-transparent text-[#c98c7a] dark:text-[#d76e5c] hover:text-[#d9534f] transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <button id="modal-like-btn" aria-label="Favourite" class="cursor-pointer p-1.5 rounded-lg border-0 bg-transparent transition-colors w-9 h-9 flex items-center justify-center">
+                <!-- unliked -->
+                <svg id="like-static" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                  fill="none" stroke="#db7353" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
+                <!-- animation -->
+                <div id="like-lottie" style="display:none;width:32px;height:32px"></div>
+                <!-- liked -->
+                <img id="like-done" src="/liked.svg" alt="" width="28" height="28" style="display:none" />
               </button>
-              <button class="flex-1 py-2 rounded-xl bg-[#c98c7a] dark:bg-[#3c572e] text-white font-semibold text-sm border-0 hover:bg-[#b87868] dark:hover:bg-[#8a5040] transition-colors cursor-pointer">
-                Add to Cart
+              <button id="modal-add-to-cart" class="add-to-cart-btn flex-1 py-2 rounded-xl bg-[#c67a63] dark:bg-[#3c572e] text-white font-semibold text-sm border-0 cursor-pointer overflow-hidden">
+                <span class="btn-flip-wrap">
+                  <span class="btn-flip-inner">
+                    <span class="btn-label">Add to Cart</span>
+                    <span class="btn-label btn-label-added">Added!</span>
+                  </span>
+                </span>
               </button>
             </div>
 
@@ -90,9 +100,9 @@ import { Badge } from "@/components/ui/badge"
     <!-- Ingredients panel -->
     <div
       id="ingredients-panel"
-      class="w-0 min-h-0 shrink-0 overflow-hidden transition-[width] duration-300 ease-in-out border-l-0 border-[#e8d5ce] dark:border-[#3a2520] bg-[#f5f0eb] dark:bg-[#1e1410] relative"
+      class="h-0 sm:h-auto sm:w-0 min-h-0 shrink-0 overflow-hidden transition-[width,height] duration-300 ease-in-out border-t-0 sm:border-t-0 sm:border-l-0 border-[#e8d5ce] dark:border-[#3a2520] bg-[#f5f0eb] dark:bg-[#1e1410] relative"
     >
-      <div id="ingredients-content" class="absolute inset-0 w-52 flex flex-col p-4 overflow-y-auto opacity-0 transition-opacity duration-200">
+      <div id="ingredients-content" class="absolute inset-0 flex flex-col p-4 overflow-y-auto opacity-0 transition-opacity duration-200">
         <p class="text-[13px] font-bold uppercase tracking-widest text-[#9a6a55] dark:text-[#A9AFA0] mb-3 m-0">Ingredients</p>
         <p id="ingredients-text" class="text-sm text-[#5a4040] dark:text-[#c8b0a8] text-pretty leading-relaxed m-0"></p>
       </div>
@@ -102,6 +112,75 @@ import { Badge } from "@/components/ui/badge"
 </div>
 
 <script>
+  import lottie from 'lottie-web';
+
+  let currentCard: HTMLElement | null = null;
+  let liked = false;
+  let lottieAnim: ReturnType<typeof lottie.loadAnimation> | null = null;
+
+  const likeBtn    = document.getElementById('modal-like-btn')!;
+  const likeStatic = document.getElementById('like-static')   as HTMLElement;
+  const likeLottie = document.getElementById('like-lottie')   as HTMLElement;
+  const likeDone   = document.getElementById('like-done')     as HTMLElement;
+
+  function resetLike() {
+    liked = false;
+    likeStatic.style.display = '';
+    likeLottie.style.display = 'none';
+    likeDone.style.display   = 'none';
+    lottieAnim?.destroy();
+    lottieAnim = null;
+  }
+
+  likeBtn.addEventListener('click', () => {
+    if (liked) {
+      resetLike();
+      return;
+    }
+    liked = true;
+    likeStatic.style.display = 'none';
+    likeLottie.style.display = '';
+    likeDone.style.display   = 'none';
+
+    lottieAnim?.destroy();
+    lottieAnim = lottie.loadAnimation({
+      container: likeLottie,
+      renderer:  'svg',
+      loop:      false,
+      autoplay:  true,
+      path:      '/like-animaton.json',
+    });
+    lottieAnim.setSpeed(3);
+    lottieAnim.addEventListener('complete', () => {
+      likeLottie.style.display = 'none';
+      likeDone.style.display   = '';
+    });
+  });
+
+  const addToCartBtn = document.getElementById('modal-add-to-cart') as HTMLButtonElement;
+
+  addToCartBtn?.addEventListener('click', () => {
+    if (!currentCard) return;
+    const card = currentCard as HTMLElement;
+    const priceStr = card.dataset.modalPrice ?? '';
+    const price = parseFloat(priceStr.replace(/[^0-9.]/g, ''));
+
+    document.dispatchEvent(new CustomEvent('petcare:add-to-cart', {
+      detail: {
+        id:    card.dataset.modalId    ?? '',
+        title: card.dataset.modalTitle ?? '',
+        price: isNaN(price) ? 0 : price,
+        image: card.dataset.modalImage ?? '',
+      }
+    }));
+
+    addToCartBtn.classList.add('btn-added');
+
+    const badge = document.getElementById('cart-badge');
+    badge?.classList.add('badge-bounce');
+    badge?.addEventListener('animationend', () => badge.classList.remove('badge-bounce'), { once: true });
+  });
+
   const modal           = document.getElementById('product-modal')!;
   const backdrop        = document.getElementById('modal-backdrop')!;
   const closeBtn        = document.getElementById('modal-close')!;
@@ -117,10 +196,23 @@ import { Badge } from "@/components/ui/badge"
 
   function toggleIngredients() {
     ingredientsOpen = !ingredientsOpen;
-    modalPanel.style.maxWidth              = ingredientsOpen ? '56rem' : '';
-    ingredientsPanel.style.width           = ingredientsOpen ? '13rem' : '0';
-    ingredientsPanel.style.borderLeftWidth = ingredientsOpen ? '1px'   : '0';
-    ingredientsBtn.dataset.open            = ingredientsOpen ? 'true'  : 'false';
+    const isMobile = window.innerWidth < 640;
+
+    if (isMobile) {
+      ingredientsPanel.style.height          = ingredientsOpen ? '13rem' : '0';
+      ingredientsPanel.style.width           = '';
+      ingredientsPanel.style.borderTopWidth  = ingredientsOpen ? '1px'   : '0';
+      ingredientsPanel.style.borderLeftWidth = '0';
+      modalPanel.style.maxWidth              = '';
+    } else {
+      ingredientsPanel.style.width           = ingredientsOpen ? '13rem' : '0';
+      ingredientsPanel.style.height          = '';
+      ingredientsPanel.style.borderLeftWidth = ingredientsOpen ? '1px'   : '0';
+      ingredientsPanel.style.borderTopWidth  = '0';
+      modalPanel.style.maxWidth              = ingredientsOpen ? '56rem' : '';
+    }
+
+    ingredientsBtn.dataset.open = ingredientsOpen ? 'true' : 'false';
 
     if (ingredientsOpen) {
       setTimeout(() => { ingredientsContent.style.opacity = '1'; }, 220);
@@ -130,6 +222,8 @@ import { Badge } from "@/components/ui/badge"
   }
 
   function openModal(card: HTMLElement) {
+    currentCard = card;
+    resetLike();
     const imgEl = document.getElementById('modal-image') as HTMLImageElement;
     const src = card.dataset.modalImage ?? '';
     const alt = card.dataset.modalTitle ?? '';
@@ -179,8 +273,10 @@ import { Badge } from "@/components/ui/badge"
 
     ingredientsOpen = false;
     modalPanel.style.maxWidth              = '';
-    ingredientsPanel.style.width           = '0';
+    ingredientsPanel.style.width           = '';
+    ingredientsPanel.style.height          = '';
     ingredientsPanel.style.borderLeftWidth = '0';
+    ingredientsPanel.style.borderTopWidth  = '0';
     ingredientsContent.style.opacity       = '0';
     delete ingredientsBtn.dataset.open;
 
@@ -189,13 +285,17 @@ import { Badge } from "@/components/ui/badge"
   }
 
   function closeModal() {
+    resetLike();
+    addToCartBtn.classList.remove('btn-added');
     modal.classList.add('hidden');
     document.body.style.overflow = '';
     descEl.classList.add('line-clamp-5');
     moreBtn.classList.add('hidden');
     modalPanel.style.maxWidth              = '';
-    ingredientsPanel.style.width           = '0';
+    ingredientsPanel.style.width           = '';
+    ingredientsPanel.style.height          = '';
     ingredientsPanel.style.borderLeftWidth = '0';
+    ingredientsPanel.style.borderTopWidth  = '0';
     ingredientsContent.style.opacity       = '0';
     ingredientsOpen = false;
     delete ingredientsBtn.dataset.open;
@@ -227,6 +327,42 @@ import { Badge } from "@/components/ui/badge"
   @keyframes modal-in {
     from { opacity: 0; transform: scale(0.96) translateY(8px); }
     to   { opacity: 1; transform: scale(1)    translateY(0);   }
+  }
+
+  .btn-flip-wrap {
+    display: block;
+    height: 1.25em;
+    overflow: hidden;
+  }
+  .btn-flip-inner {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .btn-label {
+    display: block;
+    height: 1.25em;
+    line-height: 1.25em;
+  }
+  .btn-label-added {
+    color: white;
+  }
+  .add-to-cart-btn.btn-added .btn-flip-inner {
+    transform: translateY(-1.25em);
+  }
+  .add-to-cart-btn.btn-added {
+    background-color: #79A465 !important;
+    transition: background-color 0.3s ease;
+  }
+
+  :global(.badge-bounce) {
+    animation: badge-pop 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  }
+  @keyframes badge-pop {
+    0%,100% { transform: scale(1);   }
+    30%     { transform: scale(1.5); }
+    60%     { transform: scale(0.9); }
+    80%     { transform: scale(1.2); }
   }
 
   #ingredients-btn[data-open='true'] {

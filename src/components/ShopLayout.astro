@@ -5,6 +5,7 @@ import MarqueeContent from "@/components/ui/marquee/marquee-content.astro"
 import Navbar from './Navbar.astro';
 import ShopSidebar from './ShopSidebar.astro';
 import ProductModal from './ProductModal.astro';
+import CartModal from './CartModal.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -46,6 +47,7 @@ const marqueeItems = ['Free shipping over $49', 'New arrivals every week', 'Vet-
 
     <Navbar animal={animal} />
     <ProductModal />
+    <CartModal />
 
     <div class="flex">
 

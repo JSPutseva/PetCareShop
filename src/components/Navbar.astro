@@ -37,8 +37,23 @@ const { animal } = Astro.props;
     >Dogs</a>
   </div>
 
-  <!-- Right: search + font size -->
+  <!-- Right: cart + search + font size -->
   <div class="flex items-center gap-2">
+
+    <!-- Cart button -->
+    <button
+      id="cart-open-btn"
+      aria-label="Open cart"
+      class="relative p-1.5 rounded-md border-0 cursor-pointer text-[#f5f0eb] bg-transparent hover:bg-white/20 transition-colors"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <span id="cart-badge" style="display:none" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#e8c4b8] text-[#2d5a4e] text-[10px] font-bold items-center justify-center leading-none"></span>
+    </button>
 
     <div id="search-wrap" class="flex items-center gap-1">
       <input

@@ -15,10 +15,14 @@
       "WebFetch(domain:ui.full.dev)",
       "Bash(node -e \"const p = require\\('./src/data/products.json'\\); console.log\\('total:', p.length, '| with rating:', p.filter\\(x=>x.rating\\).length, '| sample:', JSON.stringify\\(p.find\\(x=>x.rating\\)\\)?.slice\\(0,120\\)\\)\")",
       "Bash(node -e \"const p = require\\('./src/data/products.json'\\); console.log\\(Object.keys\\(p[0]\\)\\)\")",
-      "Bash(node -e \"const p = require\\('./src/data/products.json'\\); const withIng = p.filter\\(x=>x.ingredients\\); console.log\\('with ingredients:', withIng.length\\); console.log\\('sample:', withIng[0]?.ingredients?.slice\\(0,120\\)\\)\")"
+      "Bash(node -e \"const p = require\\('./src/data/products.json'\\); const withIng = p.filter\\(x=>x.ingredients\\); console.log\\('with ingredients:', withIng.length\\); console.log\\('sample:', withIng[0]?.ingredients?.slice\\(0,120\\)\\)\")",
+      "Bash(grep -n \"dark:hover:bg-$\\\\|dark:hover:bg- \" src/components/CartModal.astro)",
+      "Bash(grep -v \"^\\\\s*$\")",
+      "Bash(grep -rn \"dark:hover:bg-$\\\\|dark:hover:bg- \\\\|dark:hover:bg-'\" /home/jeannap/Projects/PetCareShop/src/)"
     ],
     "additionalDirectories": [
-      "/home/jeannap/Projects/PetCareShop"
+      "/home/jeannap/Projects/PetCareShop",
+      "/home/jeannap/Projects/PetCareShop/src/components/ui"
     ]
   }
 }

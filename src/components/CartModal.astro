@@ -1,0 +1,170 @@
+---
+---
+
+<div
+  id="cart-modal"
+  style="display:none"
+  class="fixed inset-0 z-300 flex items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Cart"
+>
+  <div id="cart-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+
+  <div class="cart-panel relative z-10 bg-white dark:bg-[#2a1e1a] rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col sm:flex-row overflow-hidden">
+
+    <!-- Items column -->
+    <div class="flex-1 min-w-0 flex flex-col overflow-hidden">
+      <div class="px-6 pt-5 pb-3 border-b border-[#e8d5ce] dark:border-[#3a2520] flex items-center justify-between">
+        <h2 class="text-lg font-bold text-[#3a2a20] dark:text-[#f5d4c0] m-0">Cart</h2>
+        <button
+          id="cart-close"
+          aria-label="Close cart"
+          class="w-8 h-8 rounded-full flex items-center justify-center border-0 cursor-pointer bg-[#f5ece8] dark:bg-[#3a2520] text-[#774A33] dark:text-[#D49E84] hover:bg-[#e8d5ce] dark:hover:bg-[#4a2f28] transition-colors text-lg font-bold"
+        >✕</button>
+      </div>
+
+      <div id="cart-items" class="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-3"></div>
+
+      <p id="cart-empty" style="display:none" class="flex-1 items-center justify-center text-sm text-[#b08878] dark:text-[#7a5548] italic px-6 py-8">
+        Your cart is empty.
+      </p>
+    </div>
+
+    <!-- Summary column -->
+    <div class="sm:w-56 shrink-0 border-t sm:border-t-0 sm:border-l border-[#e8d5ce] dark:border-[#523831] bg-[#fdf3ef] dark:bg-[#31221b] flex flex-row sm:flex-col items-center sm:items-start p-4 sm:p-5 gap-3 sm:gap-3 flex-wrap">
+      <p class="text-md text-[#5a4040] dark:text-[#c8b0a8] m-0">
+        Total price: <span id="summary-subtotal" class="font-semibold text-[#3a2a20] dark:text-[#f5d4c0]"></span>
+      </p>
+      <p class="text-md text-[#5a4040] dark:text-[#c8b0a8] m-0">
+        First order discount:
+        <span class="font-semibold text-[#4a6a2a] dark:text-[#c8dab0]">10%</span>
+      </p>
+      <div class="sm:mt-auto pt-4 sm:pt-4 border-t border-[#e8d5ce] dark:border-[#614139] sm:w-full">
+        <p class="text-xl font-bold text-[#3a2a20] dark:text-[#f5d4c0] m-0">
+          Total: <span id="summary-total"></span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const CART_KEY = 'petcare-cart';
+
+  type CartItem = { id: string; title: string; price: number; image: string; quantity: number };
+
+  function loadCart(): CartItem[] {
+    try { return JSON.parse(localStorage.getItem(CART_KEY) ?? '[]'); } catch { return []; }
+  }
+
+  function saveCart(cart: CartItem[]) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    document.dispatchEvent(new CustomEvent('petcare:cart-update', { detail: { cart } }));
+  }
+
+  function addItem(item: Omit<CartItem, 'quantity'>) {
+    const cart = loadCart();
+    const existing = cart.find(c => c.id === item.id);
+    if (existing) existing.quantity++;
+    else cart.push({ ...item, quantity: 1 });
+    saveCart(cart);
+  }
+
+  function changeQty(id: string, delta: number) {
+    const cart = loadCart();
+    const item = cart.find(c => c.id === id);
+    if (!item) return;
+    item.quantity += delta;
+    saveCart(item.quantity > 0 ? cart : cart.filter(c => c.id !== id));
+  }
+
+  function removeItem(id: string) {
+    saveCart(loadCart().filter(c => c.id !== id));
+  }
+
+  function renderCart() {
+    const cart = loadCart();
+    const itemsEl  = document.getElementById('cart-items')!;
+    const emptyEl  = document.getElementById('cart-empty')!;
+    const subtotal = cart.reduce((s, c) => s + c.price * c.quantity, 0);
+    const total    = subtotal * 0.9;
+
+    document.getElementById('summary-subtotal')!.textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('summary-total')!.textContent    = `$${total.toFixed(2)}`;
+
+    if (cart.length === 0) {
+      itemsEl.innerHTML = '';
+      (emptyEl as HTMLElement).style.display = 'flex';
+      return;
+    }
+    (emptyEl as HTMLElement).style.display = 'none';
+
+    itemsEl.innerHTML = cart.map(item => `
+      <div class="cart-row flex items-center gap-3 bg-[#fad5c5] dark:bg-[#5a3628] rounded-xl px-4 py-3" data-id="${item.id}">
+        <img src="${item.image}" alt="${item.title}" class="w-10 h-10 object-contain rounded-lg bg-white dark:bg-[#3a2520] shrink-0 p-1" />
+        <span class="flex-1 min-w-0 text-sm font-semibold text-[#3a2a20] dark:text-[#f5d4c0] leading-snug line-clamp-2">${item.title}</span>
+        <div class="flex items-center gap-1 shrink-0">
+          <button data-action="dec" data-id="${item.id}" class="qty-btn w-7 h-7 rounded-lg border-0 cursor-pointer bg-[#D8A89A] dark:bg-[#4E6833] dark:hover:bg-[#A83A18] text-white font-bold text-base flex items-center justify-center hover:bg-[#b87868] transition-colors">−</button>
+          <span class="w-6 text-center text-sm font-bold text-[#3a2a20] dark:text-[#f5d4c0]">${item.quantity}</span>
+          <button data-action="inc" data-id="${item.id}" class="qty-btn w-7 h-7 rounded-lg border-0 cursor-pointer bg-[#D8A89A] dark:bg-[#4E6833] dark:hover:bg-[#A83A18] text-white font-bold text-base flex items-center justify-center hover:bg-[#b87868] transition-colors">+</button>
+        </div>
+        <button data-action="del" data-id="${item.id}" class="del-btn w-7 h-7 rounded-lg border-0 cursor-pointer bg-transparent text-[#CE7257] dark:text-[#d76e5c] hover:text-[#d9534f] dark:hover:text-[#FD4944] transition-colors flex items-center justify-center shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </div>
+    `).join('');
+
+    itemsEl.querySelectorAll<HTMLButtonElement>('.qty-btn, .del-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id!;
+        if (btn.dataset.action === 'inc') changeQty(id, 1);
+        if (btn.dataset.action === 'dec') changeQty(id, -1);
+        if (btn.dataset.action === 'del') removeItem(id);
+        renderCart();
+        updateBadge();
+      });
+    });
+  }
+
+  function updateBadge() {
+    const count = loadCart().reduce((s, c) => s + c.quantity, 0);
+    const badge = document.getElementById('cart-badge') as HTMLElement | null;
+    if (!badge) return;
+    badge.textContent = String(count);
+    badge.style.display = count === 0 ? 'none' : 'inline-flex';
+  }
+
+  const modal    = document.getElementById('cart-modal')!;
+  const backdrop = document.getElementById('cart-backdrop')!;
+  const closeBtn = document.getElementById('cart-close')!;
+
+  function openCart()  { renderCart(); (modal as HTMLElement).style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  function closeCart() { (modal as HTMLElement).style.display = 'none'; document.body.style.overflow = ''; }
+
+  document.getElementById('cart-open-btn')?.addEventListener('click', openCart);
+  closeBtn.addEventListener('click', closeCart);
+  backdrop.addEventListener('click', closeCart);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+  document.addEventListener('petcare:add-to-cart', (e) => {
+    const item = (e as CustomEvent).detail as Omit<CartItem, 'quantity'>;
+    addItem(item);
+    updateBadge();
+  });
+
+  updateBadge();
+
+  (window as any).__cartAddItem = addItem;
+</script>
+
+<style>
+  .cart-panel { animation: cart-in 0.18s ease; }
+  @keyframes cart-in {
+    from { opacity: 0; transform: scale(0.96) translateY(8px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0);   }
+  }
+</style>
